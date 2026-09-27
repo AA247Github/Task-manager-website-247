@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TaskManager.Api/TaskManager.Api.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TaskManager.IntegrationTests/TaskManager.IntegrationTests.csproj" />
+    <Project Path="tests/TaskManager.UnitTests/TaskManager.UnitTests.csproj" />
+  </Folder>
+</Solution>
