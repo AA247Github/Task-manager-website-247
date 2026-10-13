@@ -7,4 +7,26 @@ __v0_jsx-dev-runtime.ts
 node_modules/
 .next/
 .env*.local
+
+# .NET build output
+**/bin/
+**/obj/
+
+# .NET test output
+**/TestResults/
+coverage/
+coverage.*
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# IDE files
+.vs/
+.idea/
+
+# macOS files
 .DS_Store
+# Next.js generated TypeScript declarations
+next-env.d.ts
