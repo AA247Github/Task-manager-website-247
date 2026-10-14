@@ -75,3 +75,18 @@ dotnet test backend/TaskManager.slnx --no-build
 ```bash
 dotnet run --project backend/src/TaskManager.Api/TaskManager.Api.csproj
 ```
+
+### Health check
+
+`GET /health` reports whether the API is running.
+
+| Status | Body | Meaning |
+|---|---|---|
+| `200 OK` | `Healthy` | The API is running and all checks pass |
+| `503 Service Unavailable` | `Unhealthy` | One or more checks failed |
+
+The response is plain text (`text/plain`). Use this endpoint for container and deployment health checks.
+
+```bash
+curl -i http://localhost:5057/health
+```
