@@ -5,6 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+// Registers the health check services
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
@@ -15,5 +17,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+// Expose the health checks at GET /health
+app.MapHealthChecks("/health");
 
 app.Run();
