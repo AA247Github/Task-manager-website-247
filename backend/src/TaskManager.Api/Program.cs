@@ -17,7 +17,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
-// Expose the health checks at GET /health
-app.MapHealthChecks("/health");
+// Expose the health checks at GET /health; any other method gets 405 Method Not Allowed
+app.MapHealthChecks("/health")
+    .WithMetadata(new HttpMethodMetadata(["GET"]));
 
 app.Run();

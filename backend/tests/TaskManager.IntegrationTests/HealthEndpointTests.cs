@@ -24,6 +24,19 @@ public class HealthEndpointTests(WebApplicationFactory<Program> factory)
     }
 
     [Fact]
+    public async Task PostHealth_ReturnsMethodNotAllowed()
+    {
+        // Arrange: start the API in memory and get a client that can call it
+        var client = factory.CreateClient();
+
+        // Act: send POST /health with an empty body
+        var response = await client.PostAsync("/health", content: null);
+
+        // Assert: only GET is allowed, so POST is rejected with 405
+        Assert.Equal(HttpStatusCode.MethodNotAllowed, response.StatusCode);
+    }
+
+    [Fact]
     public async Task GetHealth_OverPlainHttp_IsNotRedirected()
     {
         // Arrange: tell the app it has an https port (as it would in production),
