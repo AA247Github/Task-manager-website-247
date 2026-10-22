@@ -1,0 +1,50 @@
+# Backend CI: restores, builds and tests the ASP.NET Core solution. Name as shown on Github Actions tab
+name: Backend CI
+
+# When the workflow runs
+on:
+  # Event - Every pull request whose target (base) branch is main
+  pull_request:
+    branches: [main]
+  # Event - Every push to main, which includes merging a pull request
+  push:
+    branches: [main]
+
+jobs:
+  # ID of the job which can be referenced by other jobs in the workflow. Name as shown on Github Actions tab
+  build-and-test:
+    name: Build and test
+    # A fresh Linux machine hosted by GitHub that runs the jobs, thrown away after the job completes
+    runs-on: ubuntu-latest
+
+    # Run every command from the backend folder, where the solution lives
+    defaults:
+      run:
+        working-directory: backend
+    
+    # Runs on one machine in order, so every step can use the same code and dependencies. If one fails the rest are skipped and the job fails.
+    steps:
+      # Download the repository's code onto the runner, checks out temp merge of branch on main. New machine is empty before this. 
+      - name: Check out code
+      # pins the action to a specific version, so that future changes to the action don't break this workflow
+        uses: actions/checkout@v7
+
+      # Install the .NET 10 SDK, matching the projects' net10.0 target
+      - name: Set up .NET
+      # pins the action to a specific version, so that future changes to the action don't break this workflow
+        uses: actions/setup-dotnet@v6
+        with:
+          #installs the newest patch release (fixes and security updates) of the specified minor version (10.0). The projects target net10.0, so this is the correct version to install.
+          dotnet-version: 10.0.x
+
+      # Download the NuGet packages the projects depend on
+      - name: Restore
+        run: dotnet restore TaskManager.slnx
+
+      # Compile in Release mode; --no-restore because the previous step already did it
+      - name: Build
+        run: dotnet build TaskManager.slnx --configuration Release --no-restore
+
+      # Run every test project (unit and integration). A failing test exits non-zero, which fails this step and the workflow
+      - name: Test
+        run: dotnet test TaskManager.slnx --configuration Release --no-build
