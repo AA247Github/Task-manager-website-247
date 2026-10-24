@@ -70,6 +70,8 @@ dotnet build backend/TaskManager.slnx --no-restore
 dotnet test backend/TaskManager.slnx --no-build
 ```
 
+Test naming, structure and independence rules are in [backend/tests/README.md](backend/tests/README.md).
+
 ### Run the API
 
 ```bash
