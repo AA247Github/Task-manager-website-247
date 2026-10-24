@@ -9,6 +9,16 @@ Rules for every test in `TaskManager.UnitTests` and `TaskManager.IntegrationTest
 | `TaskManager.UnitTests` | One class or method in isolation: domain rules, validation, query building | Plain C# objects. No HTTP, no database, no file system |
 | `TaskManager.IntegrationTests` | Behaviour through the real HTTP pipeline: status codes, routing, response bodies | The API running in memory via `WebApplicationFactory` |
 
+The deciding question is whether the test calls the code directly or sends it an HTTP request.
+
+- **Unit test:** call a C# method and check what it returns, for example `validator.Validate(task)`. Nothing is started and nothing goes over HTTP.
+- **Integration test:** start the API and send it a request. `WebApplicationFactory` runs the API in memory, and `factory.CreateClient()` returns an `HttpClient`, the standard .NET class for sending HTTP requests (like `fetch` in JavaScript). The request goes through routing, middleware and the endpoint, the same path a browser request takes.
+
+```csharp
+var client = factory.CreateClient();                              // HttpClient pointed at the in-memory API
+var response = await client.PostAsync("/health", content: null);  // send POST /health
+```
+
 If a test needs `HttpClient`, `WebApplicationFactory` or a database, it is an integration test. If a rule can be checked by calling a method directly, test it in the unit project; it is faster and pinpoints the failure.
 
 Do not add placeholder tests: a test with no assertion always passes and reports coverage that does not exist.
