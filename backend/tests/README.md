@@ -90,9 +90,3 @@ Before relying on a new test, see it fail once: break the code it covers (or cha
 ## In CI
 
 `.github/workflows/backend-ci.yml` runs `dotnet test` on the whole solution for every pull request into `main` and every push to `main`. Both test projects run; a failing test fails the check.
-
-## Further reading
-
-- [Unit testing best practices for .NET](https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices): naming, Arrange-Act-Assert, avoiding logic in tests
-- [Shared context between tests (xUnit)](https://xunit.net/docs/shared-context): constructors, `IClassFixture` and collection fixtures
-- [Integration tests in ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests): `WebApplicationFactory`
